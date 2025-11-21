@@ -4,6 +4,14 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+import './pages/css/common.css';
+import './pages/css/bootstrap.min.css';
+
+import './pages/css/main.css';
+import './pages/css/responsive.css';
+
+
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
