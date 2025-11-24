@@ -1,6 +1,43 @@
-
+import { useState } from "react";
+import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 
 function Registration() {
+
+    const navigate = useNavigate();
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [firstname, setFirstname] = useState("");
+    const [lastname, setLastname] = useState("");
+    const [error, setError] = useState("");
+
+
+
+    const submitHandler = (event) => {
+
+        axios.post(`${process.env.REACT_APP_BACKEND_URL}/register`, { firstname, lastname, email, password })
+            .then((res) => {
+                localStorage.setItem('token', res.data.token);   //setting session token into local storage 
+
+                navigate("/feed");
+            })
+            .catch((err) => {
+                console.log(err);
+                setError(err.response.data.message);
+                navigate("/register");
+            })
+
+
+        event.preventDefault();
+        setEmail("");
+        setPassword("");
+        setFirstname("");
+        setLastname("");
+        setError("");
+
+    }
+
+
 
 
     return (
@@ -49,6 +86,7 @@ function Registration() {
 
                                     <p class="_social_registration_content_para _mar_b8">Get Started Now</p>
                                     <h4 class="_social_registration_content_title _titl4 _mar_b50">Registration</h4>
+                                    <p style={{ color: "red", textAlign: "center" }}>{error}</p>
                                     <button type="button" class="_social_registration_content_btn _mar_b40">
                                         <img src="assets/images/google.svg" alt="Image" class="_google_img" />
                                         <span>Register with google</span>
@@ -57,12 +95,17 @@ function Registration() {
                                     <div class="_social_registration_content_bottom_txt _mar_b40"> <span>Or</span>
                                     </div>
 
-                                    <form class="_social_registration_form">
+                                    <form class="_social_registration_form"
+                                        onSubmit={submitHandler}
+                                    >
                                         <div class="row">
                                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                                                 <div class="_social_registration_form_input _mar_b14">
                                                     <label class="_social_registration_label _mar_b8">Email</label>
-                                                    <input type="email" class="form-control _social_registration_input"></input>
+                                                    <input type="email" class="form-control _social_registration_input" required
+                                                        value={email}
+                                                        onChange={(e) => setEmail(e.target.value)}
+                                                    />
 
                                                 </div>
 
@@ -72,14 +115,30 @@ function Registration() {
                                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                                                 <div class="_social_registration_form_input _mar_b14">
                                                     <label class="_social_registration_label _mar_b8">Password</label>
-                                                    <input type="password" class="form-control _social_registration_input" />
+                                                    <input type="password" class="form-control _social_registration_input" required
+                                                        value={password}
+                                                        onChange={(e) => setPassword(e.target.value)}
+                                                    />
                                                 </div>
                                             </div>
 
                                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                                                 <div class="_social_registration_form_input _mar_b14">
-                                                    <label class="_social_registration_label _mar_b8">Repeat Password</label>
-                                                    <input type="password" class="form-control _social_registration_input" />
+                                                    <label class="_social_registration_label _mar_b8">First Name</label>
+                                                    <input type="text" class="form-control _social_registration_input" required
+                                                        value={firstname}
+                                                        onChange={(e) => setFirstname(e.target.value)}
+                                                    />
+                                                </div>
+                                            </div>
+
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                                <div class="_social_registration_form_input _mar_b14">
+                                                    <label class="_social_registration_label _mar_b8">Last Name</label>
+                                                    <input type="text" class="form-control _social_registration_input" required
+                                                        value={lastname}
+                                                        onChange={(e) => setLastname(e.target.value)}
+                                                    />
                                                 </div>
                                             </div>
 
@@ -100,7 +159,9 @@ function Registration() {
                                         <div class="row">
                                             <div class="col-lg-12 col-md-12 col-xl-12 col-sm-12">
                                                 <div class="_social_registration_form_btn _mar_t40 _mar_b60">
-                                                    <button type="button" class="_social_registration_form_btn_link _btn1">Login now</button>
+                                                    <button type="submit" class="_social_registration_form_btn_link _btn1"
+
+                                                    >Register</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -111,7 +172,7 @@ function Registration() {
                                     <div class="row">
                                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                                             <div class="_social_registration_bottom_txt">
-                                                <p class="_social_registration_bottom_txt_para">Dont have an account? <a href="#0">Create New Account</a>
+                                                <p class="_social_registration_bottom_txt_para">Already have an account? <a href="/login">LogIn</a>
                                                 </p>
                                             </div>
                                         </div>

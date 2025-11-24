@@ -1,4 +1,37 @@
+import { useState } from "react";
+import axios from 'axios';
+import { useNavigate } from "react-router-dom";
+
 function Login() {
+
+    const navigate = useNavigate();
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
+
+
+    const submitHandler = (event) => {
+
+        axios.post(`${process.env.REACT_APP_BACKEND_URL}/login`, { email, password })
+            .then((res) => {
+                localStorage.setItem('token', res.data.token);   //setting session token into local storage 
+
+                navigate("/feed");
+            })
+            .catch((err) => {
+                console.log(err.response.data.message);
+                setError(err.response.data.message);
+                navigate("/login");
+            })
+
+
+        event.preventDefault();
+        setEmail("");
+        setPassword("");
+        setError("");
+    }
+
+
     return (
 
 
@@ -33,23 +66,33 @@ function Login() {
                                 </div>
                                 <p class="_social_login_content_para _mar_b8">Welcome back</p>
                                 <h4 class="_social_login_content_title _titl4 _mar_b50">Login to your account</h4>
+                                <p style={{ color: "red", textAlign: "center" }}>{error}</p>
                                 <button type="button" class="_social_login_content_btn _mar_b40">
                                     <img src="assets/images/google.svg" alt="Image" class="_google_img" /> <span>Or sign-in with google</span>
                                 </button>
                                 <div class="_social_login_content_bottom_txt _mar_b40"> <span>Or</span>
                                 </div>
-                                <form class="_social_login_form">
+                                <form class="_social_login_form"
+                                    onSubmit={submitHandler}
+                                >
                                     <div class="row">
                                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                                             <div class="_social_login_form_input _mar_b14">
                                                 <label class="_social_login_label _mar_b8">Email</label>
-                                                <input type="email" class="form-control _social_login_input" />
+                                                <input type="email" class="form-control _social_login_input"
+                                                    value={email}
+                                                    onChange={(e) => setEmail(e.target.value)}
+                                                />
                                             </div>
                                         </div>
                                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                                             <div class="_social_login_form_input _mar_b14">
                                                 <label class="_social_login_label _mar_b8">Password</label>
-                                                <input type="password" class="form-control _social_login_input" />
+                                                <input type="password" class="form-control _social_login_input"
+                                                    value={password}
+                                                    onChange={(e) => setPassword(e.target.value)}
+
+                                                />
                                             </div>
                                         </div>
                                     </div>
@@ -69,7 +112,7 @@ function Login() {
                                     <div class="row">
                                         <div class="col-lg-12 col-md-12 col-xl-12 col-sm-12">
                                             <div class="_social_login_form_btn _mar_t40 _mar_b60">
-                                                <button type="button" class="_social_login_form_btn_link _btn1">Login now</button>
+                                                <button type="submit" class="_social_login_form_btn_link _btn1">Login now</button>
                                             </div>
                                         </div>
                                     </div>
@@ -77,7 +120,7 @@ function Login() {
                                 <div class="row">
                                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                                         <div class="_social_login_bottom_txt">
-                                            <p class="_social_login_bottom_txt_para">Dont have an account? <a href="#0">Create New Account</a>
+                                            <p class="_social_login_bottom_txt_para">Dont have an account? <a href="/register">Create New Account</a>
                                             </p>
                                         </div>
                                     </div>

@@ -1,6 +1,18 @@
-import CreatePost from "./CreatePost";
+import { useEffect } from "react";
+import CreatePost from "./CreatePost.js";
+import { useNavigate } from "react-router-dom";
 
 function Feed() {
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+        if (!token) {
+            navigate("/login");
+        }
+    }, []);
+
 
 
 
