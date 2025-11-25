@@ -53,14 +53,6 @@ function PostBody() {
     }
 
 
-    // for reloading
-    useEffect(() => {
-        window.location.reload();
-    }, [posts, commentBody]);
-
-
-
-
     useEffect(() => {
 
         const token = localStorage.getItem('token');
