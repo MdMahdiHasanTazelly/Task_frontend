@@ -30,7 +30,7 @@ function Navbar() {
                 console.log(res);
                 localStorage.removeItem("token");
                 localStorage.clear();
-                navigate("/login");
+                navigate("/");
             })
             .catch((err) => {
                 console.log(err.message);
